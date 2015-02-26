@@ -1,0 +1,21 @@
+{
+  "name": "boc-autocomplete",
+  "version": "0.0.1",
+  "homepage": "https://github.com/bbraithwaite/boc-autocomplete",
+  "authors": [
+    "https://github.com/bbraithwaite"
+  ],
+  "description": "A simple AJAX auto-complete control.",
+  "keywords": [
+    "autocomplete",
+    "ajax"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

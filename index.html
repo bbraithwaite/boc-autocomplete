@@ -1,0 +1,20 @@
+<html>
+	<head>
+		<title>Demo</title>
+	</head>
+	<body>
+		<input type="text" id="autocomplete" value="Search...">
+		<input type="text" id="autocomplete2" value="Search...">
+		<script type="text/javascript" src="/lib/boc-autocomplete.js"></script>
+		<script>
+			var opts = { 
+				url: '/api', 
+				param: 's',
+				idField: 'id',
+				nameField: 'name'
+			};
+			boc.autocomplete.init(document.getElementById('autocomplete'), opts);
+			boc.autocomplete.init(document.getElementById('autocomplete2'), opts);
+		</script>
+	</body>
+</html>
