@@ -1,20 +1,63 @@
 <html>
 	<head>
 		<title>Demo</title>
+		<style>
+
+			body {
+				font-family: Roboto-Regular,HelveticaNeue,Arial,sans-serif;
+			}
+
+			.autocomplete {
+				width: 300px;
+				font-size: 18px;
+			}
+
+      ul.autocomplete {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 300px;
+      }
+
+      .autocomplete li {
+      	font-size: 13px;
+        background-color: #fff;
+        display: list-item;
+        margin: 0;
+        padding: 10px;
+        border-bottom: solid 1px #eee;
+        border-left: solid 1px #eee;
+        border-right: solid 1px #eee;
+      }
+
+      .autocomplete li span {
+      	display: none;
+      }
+
+      .autocomplete li:hover {
+        background-color: #eee;
+        
+      }
+
+      .autocomplete .selected {
+        background-color: #eee;
+      }
+		</style>
 	</head>
 	<body>
-		<input type="text" id="autocomplete" value="Search...">
-		<input type="text" id="autocomplete2" value="Search...">
+		<input type="search" id="autocomplete" placeholder="Search...">
 		<script type="text/javascript" src="/lib/boc-autocomplete.js"></script>
 		<script>
-			var opts = { 
+			boc.autocomplete.init(document.getElementById('autocomplete'), { 
 				url: '/api', 
 				param: 's',
-				idField: 'id',
-				nameField: 'name'
-			};
-			boc.autocomplete.init(document.getElementById('autocomplete'), opts);
-			boc.autocomplete.init(document.getElementById('autocomplete2'), opts);
+				label: 'title',
+				value: 'id',
+				select: function(value, label) {
+					console.log(value);
+					console.log(label);
+				}
+			});
 		</script>
 	</body>
 </html>
