@@ -65,7 +65,10 @@ app.get('/api', function(req, res) {
 		result.push(e);
 	}
 
-	res.json(result);
+	// simulate i/o
+	setTimeout(function() {
+		res.json(result);	
+	}, 500);
 });
 
 app.use('/index.html', express.static(__dirname + '/index.html'));

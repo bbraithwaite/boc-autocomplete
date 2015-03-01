@@ -1,0 +1,35 @@
+.autocomplete {
+	width: 300px;
+	font-size: 18px;
+}
+
+ul.autocomplete {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 300px;
+}
+
+.autocomplete li {
+	font-size: 13px;
+  background-color: #fff;
+  display: list-item;
+  margin: 0;
+  padding: 10px;
+  border-bottom: solid 1px #eee;
+  border-left: solid 1px #eee;
+  border-right: solid 1px #eee;
+}
+
+.autocomplete li span {
+	display: none;
+}
+
+.autocomplete li:hover {
+  background-color: #eee;
+  
+}
+
+.autocomplete .selected {
+  background-color: #eee;
+}

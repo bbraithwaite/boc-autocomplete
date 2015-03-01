@@ -2,53 +2,17 @@
 	<head>
 		<title>Demo</title>
 		<style>
-
 			body {
 				font-family: HelveticaNeue,Arial,sans-serif;
 			}
-
-			.autocomplete {
-				width: 300px;
-				font-size: 18px;
-			}
-
-      ul.autocomplete {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        width: 300px;
-      }
-
-      .autocomplete li {
-      	font-size: 13px;
-        background-color: #fff;
-        display: list-item;
-        margin: 0;
-        padding: 10px;
-        border-bottom: solid 1px #eee;
-        border-left: solid 1px #eee;
-        border-right: solid 1px #eee;
-      }
-
-      .autocomplete li span {
-      	display: none;
-      }
-
-      .autocomplete li:hover {
-        background-color: #eee;
-        
-      }
-
-      .autocomplete .selected {
-        background-color: #eee;
-      }
 		</style>
+		<link rel="stylesheet" type="text/css" href="/lib/boc-autocomplete.css">
 	</head>
 	<body>
 		<input type="search" id="autocomplete" placeholder="Search...">
-		<script type="text/javascript" src="/lib/boc-autocomplete.js"></script>
+		<script type="text/javascript" src="lib/boc-autocomplete.js"></script>
 		<script>
-			boc.autocomplete.init(document.getElementById('autocomplete'), { 
+			new Autocomplete(document.getElementById('autocomplete'), { 
 				url: '/api', 
 				param: 's',
 				label: 'title',
@@ -58,6 +22,6 @@
 					console.log(label);
 				}
 			});
-		</script>
+ 		</script>
 	</body>
 </html>
