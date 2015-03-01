@@ -1,6 +1,7 @@
 {
   "name": "boc-autocomplete",
   "version": "0.0.1",
+  "main": ["lib/boc-autocomplete.css", "lib/boc-autocomplete.js"],
   "homepage": "https://github.com/bbraithwaite/boc-autocomplete",
   "authors": [
     "https://github.com/bbraithwaite"
