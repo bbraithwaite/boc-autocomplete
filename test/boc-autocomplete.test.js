@@ -7,7 +7,7 @@
 describe('boc.autocomplete', function() {
 
   // utility function to restore overridable funcs on prototype
-  var mock = function(obj) {
+  var createMock = function(obj) {
 
     var methods = {};
 
@@ -98,7 +98,7 @@ describe('boc.autocomplete', function() {
     var mockAutocomplete = window.Autocomplete.prototype;
 
     beforeEach(function() {
-      mock(mockAutocomplete);
+      createMock(mockAutocomplete);
     });
 
     afterEach(function() {
@@ -119,27 +119,6 @@ describe('boc.autocomplete', function() {
       };
       new window.Autocomplete(searchInput, opts);
       searchInput.dispatchEvent(getKeyboardEvent('keydown'));
-    });
-
-    it('should listen to blur event', function (done) {
-      mockAutocomplete.blurListener = function() {
-        done();
-      };
-      new window.Autocomplete(searchInput, opts);
-      searchInput.dispatchEvent(getKeyboardEvent('blur'));
-    });
-
-  });
-
-  describe('blur event listener', function() {
-    
-    it('should clear options if the UL is populated', function() {
-      var thisArg = {
-        ul: ulFixture(1)
-      };
-      var fn = window.Autocomplete.prototype.blurListener.bind(thisArg);
-      fn();
-      thisArg.ul.children.length.should.equal(0);
     });
 
   });
@@ -211,7 +190,7 @@ describe('boc.autocomplete', function() {
       var mockAutocomplete = window.Autocomplete.prototype;
 
       beforeEach(function() {
-        mock(mockAutocomplete);
+        createMock(mockAutocomplete);
       });
 
       afterEach(function() {
@@ -286,7 +265,7 @@ describe('boc.autocomplete', function() {
       var mockAutocomplete = window.Autocomplete.prototype;
 
       beforeEach(function() {
-        mock(mockAutocomplete);
+        createMock(mockAutocomplete);
       });
 
       afterEach(function() {
@@ -345,8 +324,8 @@ describe('boc.autocomplete', function() {
     var mockAutocomplete = window.Autocomplete.prototype;
 
     beforeEach(function() {
-      mock(mockAutocomplete);
-      mock(mockJsonHttp);
+      createMock(mockAutocomplete);
+      createMock(mockJsonHttp);
     });
 
     afterEach(function() {
