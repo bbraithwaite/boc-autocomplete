@@ -6,8 +6,8 @@
 
 describe('boc.autocomplete', function() {
 
-// utility function to restore overridable funcs on prototype
-  var override = function(obj) {
+  // utility function to restore overridable funcs on prototype
+  var mock = function(obj) {
 
     var methods = {};
 
@@ -26,9 +26,25 @@ describe('boc.autocomplete', function() {
     };
   };
 
-  var searchInput;
-  var mockObj = window.Autocomplete.prototype;
+  var ulFixture = function(liCount) {
+    var ul = document.createElement('ul');
+    for (var i = 0; i < liCount; i++) {
+      var li = document.createElement('li');
+      li.innerHTML = i;
+      ul.appendChild(li);  
+    }
 
+    return ul;
+  };
+
+  var getKeyboardEvent = function(type) {
+    var evt = document.createEvent('KeyboardEvent');
+    evt.initEvent(type, true, false);
+    return evt;
+  };
+
+  var searchInput;
+ 
   var keys = {
     RETURN : 13,
     TAB : 9,
@@ -49,13 +65,11 @@ describe('boc.autocomplete', function() {
       'afterbegin', 
       '<div id="fixture"><input type="search" id="autocomplete"></div>');
     searchInput = document.getElementById('autocomplete');
-    override(mockObj);
   });
 
   // remove the html fixture from the DOM
   afterEach(function() {
     document.body.removeChild(document.getElementById('fixture'));
-    mockObj.restore();
   });
 
   describe('control initialisation', function() {
@@ -80,45 +94,38 @@ describe('boc.autocomplete', function() {
   });
 
   describe('control event handler registration', function() {
-
-    var getKeyboardEvent = function(type) {
-      var evt = document.createEvent('KeyboardEvent');
-      evt.initEvent(type, true, false);
-      return evt;
-    };
     
+    var mockAutocomplete = window.Autocomplete.prototype;
+
+    beforeEach(function() {
+      mock(mockAutocomplete);
+    });
+
+    afterEach(function() {
+      mockAutocomplete.restore();
+    });
+
     it('should listen to input event', function (done) {
-      mockObj.inputListener = function() {
-        return function() {
-          done();
-        };
+      mockAutocomplete.inputListener = function() {
+        done();
       };
-
       new window.Autocomplete(searchInput, opts);
-
       searchInput.dispatchEvent(getKeyboardEvent('input'));
     });
 
     it('should listen to keydown event', function (done) {
-      mockObj.keydownListener = function() {
-        return function() {
-          done();
-        };
+      mockAutocomplete.keydownListener = function() {
+        done();
       };
-
       new window.Autocomplete(searchInput, opts);
       searchInput.dispatchEvent(getKeyboardEvent('keydown'));
     });
 
     it('should listen to blur event', function (done) {
-      mockObj.blurListener = function() {
-        return function() {
-          done();
-        };
+      mockAutocomplete.blurListener = function() {
+        done();
       };
-
       new window.Autocomplete(searchInput, opts);
-
       searchInput.dispatchEvent(getKeyboardEvent('blur'));
     });
 
@@ -127,33 +134,18 @@ describe('boc.autocomplete', function() {
   describe('blur event listener', function() {
     
     it('should clear options if the UL is populated', function() {
-      var ul = document.createElement('ul');
-      ul.appendChild(document.createElement('li'));
-      mockObj.blurListener(ul)();
-      ul.children.length.should.equal(0);
-    });
-
-    it('should do nothing if UL is empty', function() {
-      var ul = document.createElement('ul');
-      mockObj.blurListener(ul)();
-      ul.children.length.should.equal(0);
+      var thisArg = {
+        ul: ulFixture(1)
+      };
+      var fn = window.Autocomplete.prototype.blurListener.bind(thisArg);
+      fn();
+      thisArg.ul.children.length.should.equal(0);
     });
 
   });
 
   describe('keydown event listener', function() {
     
-    var ulFixture = function() {
-      var ul = document.createElement('ul');
-      for (var i = 0; i < 3; i++) {
-        var li = document.createElement('li');
-        li.innerHTML = i;
-        ul.appendChild(li);  
-      }
-
-      return ul;
-    };
-
     var assertOptionSelected = function(ul, selectedIndex) {
       for (var i = ul.children.length - 1; i >= 0; i--) {
         if (i === selectedIndex) {
@@ -164,29 +156,31 @@ describe('boc.autocomplete', function() {
       }
     };
 
-    var ul;
     var keydown;
+    var thisArg;
 
     beforeEach(function() {
-      ul = ulFixture();
-      keydown = mockObj.keydownListener(ul);
+      thisArg = {
+        ul: ulFixture(3)
+      };
+      keydown = window.Autocomplete.prototype.keydownListener.bind(thisArg);
     });
 
     describe('arrow key behaviour', function() {
       it('should select the first item from default state', function() { 
         keydown({ keyCode: keys.DOWN });
-        assertOptionSelected(ul, 0);
+        assertOptionSelected(thisArg.ul, 0);
       });
 
-      it('should not run off the end of the list', function() {
+      it('should not run off the end of the list', function() { 
         keydown({ keyCode: keys.DOWN });
-        assertOptionSelected(ul, 0);
+        assertOptionSelected(thisArg.ul , 0);
         keydown({ keyCode: keys.DOWN });
-        assertOptionSelected(ul, 1);
+        assertOptionSelected(thisArg.ul , 1);
         keydown({ keyCode: keys.DOWN });
-        assertOptionSelected(ul, 2);
+        assertOptionSelected(thisArg.ul , 2);
         keydown({ keyCode: keys.DOWN });
-        assertOptionSelected(ul, 2);
+        assertOptionSelected(thisArg.ul , 2);
       });
 
       it('should move up the list', function() {
@@ -194,12 +188,12 @@ describe('boc.autocomplete', function() {
         keydown({ keyCode: keys.DOWN });
         keydown({ keyCode: keys.DOWN });
         keydown({ keyCode: keys.UP });
-        assertOptionSelected(ul, 1);
+        assertOptionSelected(thisArg.ul, 1);
       });
 
       it('should not move up in default state', function() {
         keydown({ keyCode: keys.UP });
-        assertOptionSelected(ul, -1);
+        assertOptionSelected(thisArg.ul, -1);
       });
 
       it('should not run off the top of the list', function() {
@@ -208,23 +202,41 @@ describe('boc.autocomplete', function() {
         keydown({ keyCode: keys.UP });
         keydown({ keyCode: keys.UP });
         keydown({ keyCode: keys.UP });
-        assertOptionSelected(ul, -1);
+        assertOptionSelected(thisArg.ul, -1);
       });
     });
 
     describe('tab key press', function () {
+      
+      var mockAutocomplete = window.Autocomplete.prototype;
+
+      beforeEach(function() {
+        mock(mockAutocomplete);
+      });
+
+      afterEach(function() {
+        mockAutocomplete.restore();
+      });
+
       it('should prevent default if there are options', function(done) {
-        mockObj.select = function() {
+        mockAutocomplete.select = function() {};
+        var thisArg = {
+          ul: ulFixture(3)
         };
-        keydown({ 
+        
+        mockAutocomplete.keydownListener.call(thisArg, {
           keyCode: keys.TAB, 
           preventDefault: done
         });
       });
 
       it('should not prevent default if there are no options', function(done) {
-        var keydown = mockObj.keydownListener(document.createElement('ul'));
-        keydown({ 
+        mockAutocomplete.select = function() {};
+        var thisArg = {
+          ul: ulFixture(0)
+        };
+
+        mockAutocomplete.keydownListener.call(thisArg, { 
           keyCode: keys.TAB, 
           preventDefault: function() {
             done('should not be called');
@@ -233,45 +245,73 @@ describe('boc.autocomplete', function() {
         done();
       });
 
-      it('should choose first option mid-typing', function(done) {
-        mockObj.select = function(item) {
+      it('should choose option in selected state', function(done) {
+        mockAutocomplete.select = function(that, item) {
           item.innerHTML.should.equal('1');
           item.className.should.equal('selected');
           done();
         };
 
-        // when the tab key is pressed, it should default to select the
-        // first item in the options
+        var thisArg = {
+          ul: ulFixture(3)
+        };
+        var keydown = mockAutocomplete.keydownListener.bind(thisArg);
+
+        // it should default to select the first item in the options
         keydown({ keyCode: keys.DOWN });
         keydown({ keyCode: keys.DOWN });
         keydown({ keyCode: keys.TAB, preventDefault: function() {} });
       });
 
-      it('should choose selected option if not in default state', 
-        function(done) {
-        mockObj.select = function(item) {
+      it('should choose first option mid-typing', function(done) {
+        mockAutocomplete.select = function(that, item) {
           item.innerHTML.should.equal('0');
           done();
         };
 
-        // when the tab key is pressed, it should default to select the
-        // first item in the options
-        keydown({ keyCode: keys.TAB, preventDefault: function() {} });
+        var thisArg = {
+          ul: ulFixture(3)
+        };
+
+        // it should default to select the first item in the options
+        mockAutocomplete.keydownListener.call(thisArg, { 
+          keyCode: keys.TAB, 
+          preventDefault: function() {} 
+        });
       });
     });
 
     describe('return key press', function() {
+      
+      var mockAutocomplete = window.Autocomplete.prototype;
+
+      beforeEach(function() {
+        mock(mockAutocomplete);
+      });
+
+      afterEach(function() {
+        mockAutocomplete.restore();
+      });
+
       it('should prevent default if there are options', function(done) {
-        mockObj.select = function() {};
-        keydown({ 
+        mockAutocomplete.select = function() {};
+        var thisArg = {
+          ul: ulFixture(3)
+        };
+        
+        mockAutocomplete.keydownListener.call(thisArg, { 
           keyCode: keys.RETURN, 
           preventDefault: done
         });
       });
 
       it('should not prevent default if there are no options', function(done) {
-        var keydown = mockObj.keydownListener(document.createElement('ul'));
-        keydown({ 
+        mockAutocomplete.select = function() {};
+        var thisArg = {
+          ul: ulFixture(0)
+        };
+        
+        mockAutocomplete.keydownListener.call(thisArg, { 
           keyCode: keys.RETURN, 
           preventDefault: function() {
             done('should not be called');
@@ -280,12 +320,15 @@ describe('boc.autocomplete', function() {
         done();
       });
 
-      it('should choose selected option if not in default state', 
-        function(done) {
-        mockObj.select = function(item) {
+      it('should choose option in selected state', function(done) {
+        mockAutocomplete.select = function(that, item) {
           item.innerHTML.should.equal('0');
           done();
         };
+        var thisArg = {
+          ul: ulFixture(3)
+        };
+        var keydown = mockAutocomplete.keydownListener.bind(thisArg);
 
         // when the return key is pressed, it should default to select the
         // first item in the options
@@ -299,36 +342,55 @@ describe('boc.autocomplete', function() {
   describe('input event listener', function() {
 
     var mockJsonHttp = window.JsonHttp.prototype;
+    var mockAutocomplete = window.Autocomplete.prototype;
+
+    beforeEach(function() {
+      mock(mockAutocomplete);
+      mock(mockJsonHttp);
+    });
+
+    afterEach(function() {
+      mockAutocomplete.restore();
+      mockJsonHttp.restore();
+    });
 
     it('should set placeholder to indicate server error', function() {
-      var ul = document.createElement('ul');
-      var input = mockObj.inputListener('http://localhost/s=', ul);
-      var thisArg = {
-        value: 'foo',
-        placeholder : ''
-      };
-
       mockJsonHttp.get = function(url, callback) {
         url.should.equal('http://localhost/s=foo');
         callback('error', null);
-        thisArg.placeholder.should.equal('error fetching data...');
-        thisArg.value.should.equal('');
+        thisArg.input.placeholder.should.equal('error fetching data...');
+        thisArg.input.value.should.equal('');
       };
-      input.call(thisArg);
+
+      var thisArg = {
+        input: {
+          value: 'foo'
+        },
+        placeholder : '',
+        options: {
+          url : 'http://localhost/s='
+        },
+        ul: ulFixture(0)
+      };
+
+      mockAutocomplete.inputListener.call(thisArg);
     });
 
     it('should display expected numer of items', function(done) {
-      var ul = document.createElement('ul');
-      var input = mockObj.inputListener.call({ 
-        opts: opts 
-      },
-      'http://localhost/s=', ul);
-      
       var thisArg = {
-        value: 'foo',
+        input: {
+          value: 'foo'
+        },
+        placeholder : '',
+        options: {
+          url :   'http://localhost/s=',
+          label:  'title',
+          value:  'id',
+        },
+        ul: ulFixture(0)
       };
 
-      mockObj.select = function() {
+      mockAutocomplete.select = function() {
         done();
       };
 
@@ -344,15 +406,19 @@ describe('boc.autocomplete', function() {
             title: 'Condiments', 
             description: 'Sweet and savory sauces and seasonings' 
           }]);
-        ul.children.length.should.equal(2);
-        ul.children[0].innerHTML.should.equal('<span>0</span>Beverages');
-        ul.children[1].innerHTML.should.equal('<span>1</span>Condiments');
+
+        thisArg.ul.children.length.should.equal(2);
+        thisArg.ul.children[0].innerHTML
+          .should.equal('<span>0</span>Beverages');
+        thisArg.ul.children[1].innerHTML
+          .should.equal('<span>1</span>Condiments');
 
         var evt = document.createEvent('MouseEvent');
         evt.initEvent('click', true, false);
-        ul.children[1].dispatchEvent(evt);
+        thisArg.ul.children[1].dispatchEvent(evt);
       };
-      input.call(thisArg);
+
+      mockAutocomplete.inputListener.call(thisArg);
     });
 
   });
