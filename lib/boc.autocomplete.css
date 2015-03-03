@@ -1,12 +1,13 @@
 .autocomplete {
-	font-size: 18px;
-  width: 100%;
+  font-size: 18px;
+  width: 300px;
 }
 
 ul.autocomplete {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  width: 300px;
 }
 
 .autocomplete li {
@@ -16,10 +17,11 @@ ul.autocomplete {
   border-bottom: solid 1px #eee;
   border-left: solid 1px #eee;
   border-right: solid 1px #eee;
+  background-color: #fff;
 }
 
 .autocomplete li span {
-	display: none;
+  display: none;
 }
 
 .autocomplete li:hover {
