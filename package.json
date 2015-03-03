@@ -1,5 +1,5 @@
 {
-  "name": "boc-autocomplete",
+  "name": "boc.autocomplete",
   "version": "0.0.1",
   "description": "A simple AJAX auto-complete control.",
   "main": "index.js",
@@ -19,6 +19,10 @@
   "devDependencies": {
     "chai": "^2.1.0",
     "express": "^4.12.0",
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.11.0",
+    "grunt-contrib-uglify": "^0.8.0",
     "karma": "^0.12.31",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.1.7",
