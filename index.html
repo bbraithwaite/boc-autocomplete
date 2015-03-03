@@ -6,20 +6,18 @@
 				font-family: HelveticaNeue,Arial,sans-serif;
 			}
 		</style>
-		<link rel="stylesheet" type="text/css" href="/lib/boc-autocomplete.css">
+		<link rel="stylesheet" type="text/css" href="/lib/boc.autocomplete.css">
 	</head>
 	<body>
 		<input type="search" id="autocomplete" placeholder="Search...">
-		<script type="text/javascript" src="lib/boc-autocomplete.js"></script>
+		<script type="text/javascript" src="lib/boc.autocomplete.js"></script>
 		<script>
 			new Autocomplete(document.getElementById('autocomplete'), { 
 				url: '/api', 
 				param: 's',
 				label: 'title',
-				value: 'id',
-				select: function(value, label) {
-					console.log(value);
-					console.log(label);
+				select: function(item) {
+					console.log(item);
 				}
 			});
  		</script>
