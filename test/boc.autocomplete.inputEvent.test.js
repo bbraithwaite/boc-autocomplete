@@ -41,11 +41,13 @@ describe('boc.autocomplete.inputEvent', function() {
   describe('on server error', function() {
 
     it('should set placeholder to indicate error', function() {
-      mockJsonHttp.get = function(url, callback) {
-        url.should.equal('http://localhost/s=foo');
-        callback('error', null);
-        thisArg.input.placeholder.should.equal('error fetching data...');
-        thisArg.input.value.should.equal('');
+      var jsonHttp = {
+        get: function(url, callback) {
+          url.should.equal('http://localhost/s=foo');
+          callback('error', null);
+          thisArg.input.placeholder.should.equal('error fetching data...');
+          thisArg.input.value.should.equal('');
+        }
       };
 
       var thisArg = {
@@ -56,7 +58,8 @@ describe('boc.autocomplete.inputEvent', function() {
         options: {
           url : 'http://localhost/s='
         },
-        ul: ulFixture(0)
+        ul: ulFixture(0),
+        jsonHttp : jsonHttp
       };
 
       autocompleteInstance.inputListener.call(thisArg);
@@ -67,41 +70,28 @@ describe('boc.autocomplete.inputEvent', function() {
   describe('on server data response', function() {
 
     it('should populate options', function(done) {
-      var thisArg = {
-        input: {
-          value: 'foo'
-        },
-        placeholder : '',
-        options: {
-          url :   'http://localhost/s=',
-          label:  'title'
-        },
-        ul: ulFixture(0)
+
+      var jsonHttp = {
+        get: function(url, callback) {
+          url.should.equal('http://localhost/s=foo');
+          callback(null, [{ 
+              id: 0, 
+              title: 'Beverages', 
+              description: 'Soft drinks, coffees, teas, beers, and ales' 
+            },
+            { 
+              id: 1, 
+              title: 'Condiments', 
+              description: 'Sweet and savory sauces and seasonings' 
+            }]);
+
+          thisArg.ul.children.length.should.equal(2);
+          thisArg.ul.children[0].innerHTML.should.equal('Beverages');
+          thisArg.ul.children[1].innerHTML.should.equal('Condiments');
+          done();
+        }
       };
 
-      mockJsonHttp.get = function(url, callback) {
-        url.should.equal('http://localhost/s=foo');
-        callback(null, [{ 
-            id: 0, 
-            title: 'Beverages', 
-            description: 'Soft drinks, coffees, teas, beers, and ales' 
-          },
-          { 
-            id: 1, 
-            title: 'Condiments', 
-            description: 'Sweet and savory sauces and seasonings' 
-          }]);
-
-        thisArg.ul.children.length.should.equal(2);
-        thisArg.ul.children[0].innerHTML.should.equal('Beverages');
-        thisArg.ul.children[1].innerHTML.should.equal('Condiments');
-        done();
-      };
-
-      autocompleteInstance.inputListener.call(thisArg);
-    });
-
-    it('should register option click event', function(done) {
       var thisArg = {
         input: {
           value: 'foo'
@@ -112,30 +102,51 @@ describe('boc.autocomplete.inputEvent', function() {
           label:  'title'
         },
         ul: ulFixture(0),
+        jsonHttp: jsonHttp
+      };
+
+      autocompleteInstance.inputListener.call(thisArg);
+    });
+
+    it('should register option click event', function(done) {
+      
+      var jsonHttp = {
+        get: function(url, callback) {
+          callback(null, [{ 
+              id: 0, 
+              title: 'Beverages', 
+              description: 'Soft drinks, coffees, teas, beers, and ales' 
+            },
+            { 
+              id: 1, 
+              title: 'Condiments', 
+              description: 'Sweet and savory sauces and seasonings' 
+            }]);
+
+          // init option click event
+          var evt = document.createEvent('MouseEvent');
+          evt.initEvent('click', true, false);
+          thisArg.ul.children[1].dispatchEvent(evt);
+        }
+      };
+
+      var thisArg = {
+        input: {
+          value: 'foo'
+        },
+        placeholder : '',
+        options: {
+          url :   'http://localhost/s=',
+          label:  'title'
+        },
+        ul: ulFixture(0),
+        jsonHttp : jsonHttp,
         select: function(that, option) {
           var json = '{"id":1,"title":"Condiments",' + 
             '"description":"Sweet and savory sauces and seasonings"}';
           option.dataset.item.should.eql(json);
           done();
         }
-      };
-
-      mockJsonHttp.get = function(url, callback) {
-        callback(null, [{ 
-            id: 0, 
-            title: 'Beverages', 
-            description: 'Soft drinks, coffees, teas, beers, and ales' 
-          },
-          { 
-            id: 1, 
-            title: 'Condiments', 
-            description: 'Sweet and savory sauces and seasonings' 
-          }]);
-
-        // init option click event
-        var evt = document.createEvent('MouseEvent');
-        evt.initEvent('click', true, false);
-        thisArg.ul.children[1].dispatchEvent(evt);
       };
 
       autocompleteInstance.inputListener.call(thisArg);
