@@ -62,7 +62,7 @@ describe('boc.autocomplete.inputEvent', function() {
         jsonHttp : jsonHttp
       };
 
-      autocompleteInstance.inputListener.call(thisArg);
+      autocompleteInstance.inputEvt.call(thisArg);
     });
 
   });
@@ -105,7 +105,7 @@ describe('boc.autocomplete.inputEvent', function() {
         jsonHttp: jsonHttp
       };
 
-      autocompleteInstance.inputListener.call(thisArg);
+      autocompleteInstance.inputEvt.call(thisArg);
     });
 
     it('should register option click event', function(done) {
@@ -149,7 +149,7 @@ describe('boc.autocomplete.inputEvent', function() {
         }
       };
 
-      autocompleteInstance.inputListener.call(thisArg);
+      autocompleteInstance.inputEvt.call(thisArg);
     });
 
   });

@@ -59,7 +59,7 @@ describe('boc.autocomplete.keydownEvent', function() {
         ul: ulFixture(3)
       };
 
-      keydown = Autocomplete.prototype.keydownListener.bind(thisArg);
+      keydown = Autocomplete.prototype.keyEvt.bind(thisArg);
     });
 
     it('should select the first item from default state', function() { 
@@ -109,7 +109,7 @@ describe('boc.autocomplete.keydownEvent', function() {
         ul: ulFixture(3)
       };
       
-      Autocomplete.prototype.keydownListener.call(thisArg, {
+      Autocomplete.prototype.keyEvt.call(thisArg, {
         keyCode: keys.TAB, 
         preventDefault: done
       });
@@ -121,7 +121,7 @@ describe('boc.autocomplete.keydownEvent', function() {
         ul: ulFixture(0)
       };
 
-      Autocomplete.prototype.keydownListener.call(thisArg, { 
+      Autocomplete.prototype.keyEvt.call(thisArg, { 
         keyCode: keys.TAB, 
         preventDefault: function() {
           done('should not be called');
@@ -141,7 +141,7 @@ describe('boc.autocomplete.keydownEvent', function() {
         }
       };
 
-      var keydown = Autocomplete.prototype.keydownListener.bind(thisArg);
+      var keydown = Autocomplete.prototype.keyEvt.bind(thisArg);
 
       // it should default to select the first item in the options
       keydown({ keyCode: keys.DOWN });
@@ -159,7 +159,7 @@ describe('boc.autocomplete.keydownEvent', function() {
       };
 
       // it should default to select the first item in the options
-      Autocomplete.prototype.keydownListener.call(thisArg, { 
+      Autocomplete.prototype.keyEvt.call(thisArg, { 
         keyCode: keys.TAB, 
         preventDefault: function() {} 
       });
@@ -173,7 +173,7 @@ describe('boc.autocomplete.keydownEvent', function() {
         ul: ulFixture(3)
       };
       
-      Autocomplete.prototype.keydownListener.call(thisArg, { 
+      Autocomplete.prototype.keyEvt.call(thisArg, { 
         keyCode: keys.RETURN, 
         preventDefault: done
       });
@@ -184,7 +184,7 @@ describe('boc.autocomplete.keydownEvent', function() {
         ul: ulFixture(0)
       };
       
-      Autocomplete.prototype.keydownListener.call(thisArg, { 
+      Autocomplete.prototype.keyEvt.call(thisArg, { 
         keyCode: keys.RETURN, 
         preventDefault: function() {
           done('should not be called');
@@ -201,7 +201,7 @@ describe('boc.autocomplete.keydownEvent', function() {
           done();
         }
       };
-      var keydown = Autocomplete.prototype.keydownListener.bind(thisArg);
+      var keydown = Autocomplete.prototype.keyEvt.bind(thisArg);
 
       // when the return key is pressed, it should default to select the
       // first item in the options

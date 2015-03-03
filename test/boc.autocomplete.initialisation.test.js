@@ -53,7 +53,7 @@ describe('boc.autocomplete.initialisation', function() {
     });
 
     it('should listen to input event', function (done) {
-      Autocomplete.prototype.inputListener = function() {
+      Autocomplete.prototype.inputEvt = function() {
         done();
       };
       new window.Autocomplete(searchInput, {});
@@ -61,7 +61,7 @@ describe('boc.autocomplete.initialisation', function() {
     });
 
     it('should listen to keydown event', function (done) {
-      Autocomplete.prototype.keydownListener = function() {
+      Autocomplete.prototype.keyEvt = function() {
         done();
       };
       new window.Autocomplete(searchInput, {});
