@@ -2,6 +2,9 @@
   "name": "boc.autocomplete",
   "version": "0.0.1",
   "main": "./lib",
+  "moduleType": [
+    "globals"
+  ],
   "homepage": "https://github.com/bbraithwaite/boc-autocomplete",
   "authors": [
     "https://github.com/bbraithwaite"
