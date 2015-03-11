@@ -4,7 +4,8 @@
   "description": "A simple AJAX auto-complete control.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/karma start karma.conf.js"
+    "test": "./node_modules/.bin/karma start karma.dev.js",
+    "test-build": "./node_modules/.bin/karma start karma.build.js"
   },
   "repository": {
     "type": "git",
