@@ -4,6 +4,8 @@
   "description": "A simple AJAX auto-complete control with no dependencies.",
   "main": "index.js",
   "scripts": {
+    "prestart": "grunt",
+    "start" : "node server.js",
     "test": "./node_modules/.bin/karma start karma.dev.js",
     "test-build": "./node_modules/.bin/karma start karma.build.js"
   },
