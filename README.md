@@ -8,6 +8,13 @@ Tested with:
 * Safari
 * Safari iOS
 
+Works with:
+
+* Mouse
+* Keyboard (arrow keys for selection)
+
+Only 2kb minified.
+
 
 ## Example
 
@@ -28,5 +35,20 @@ new Autocomplete(document.getElementById('autocomplete'), {
 	}
 });
 ```
+
+## See it working
+
+Clone the repository.
+
+Run:
+
+```
+npm install
+npm start
+```
+
+Navigate to:
+
+http://localhost:3000/index.html
 
 **Work in progress.**

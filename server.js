@@ -73,6 +73,7 @@ app.get('/api', function(req, res) {
 
 app.use('/index.html', express.static(__dirname + '/index.html'));
 app.use('/lib', express.static(__dirname + '/lib'));
+app.use('/build', express.static(__dirname + '/build'));
 
 app.listen(port, function() {
 	console.log('Server running at http://127.0.0.1:' + port);	
