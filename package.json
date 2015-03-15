@@ -1,7 +1,7 @@
 {
   "name": "boc.autocomplete",
   "version": "0.0.1",
-  "description": "A simple AJAX auto-complete control.",
+  "description": "A simple AJAX auto-complete control with no dependencies.",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/karma start karma.dev.js",
