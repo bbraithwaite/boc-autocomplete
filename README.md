@@ -2,6 +2,8 @@
 
 A minimal, AJAX autocomplete with no dependencies.
 
+Only 2kb minified.
+
 Tested with:
 
 * Chrome
@@ -13,8 +15,7 @@ Works with:
 * Mouse
 * Keyboard (arrow keys for selection)
 
-Only 2kb minified.
-
+![basic functionality](boc-example.gif)
 
 ## Example
 

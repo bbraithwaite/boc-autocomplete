@@ -5,67 +5,26 @@ var app = express();
 var port = (process.env.PORT || 3000);
 
 app.get('/api', function(req, res) {
-	
-	var a = { 
-		id: 0, 
-		title: 'Beverages', 
-		description: 'Soft drinks, coffees, teas, beers, and ales' 
-	};
-	var b = { 
-		id: 1, 
-		title: 'Condiments', 
-		description: 'Sweet and savory sauces, relishes, spreads, and seasonings' 
-	};
-	var c = { 
-		id: 2, 
-		title: 'Confections', 
-		description: 'Desserts, candies, and sweet breads' 
-	};
-	var d = { 
-		id: 3, 
-		title: 'Dairy Products', 
-		description: 'Cheeses' 
-	};
-	var e = { 
-		id: 4, 
-		title: 'Grains/Cereals', 
-		description: 'Breads, crackers, pasta, and cereal' 
-	};
 
+	var data = [
+		{ 'title': 'Beverages', 'description': 'Soft drinks, coffees, teas, beers, and ales' },
+		{ 'title': 'Condiments', 'description': 'Sweet and savory sauces, relishes, spreads, and seasonings' },
+		{ 'title': 'Confections', 'description': 'Desserts, candies, and sweet breads' },
+		{ 'title': 'Dairy Products', 'description': 'Cheeses' },
+		{ 'title': 'Grains/Cereals', 'description': 'Breads, crackers, pasta, and cereal' },
+		{ 'title': 'Meat/Poultry', 'description': 'Prepared meats' },
+		{ 'title': 'Produce', 'description': 'Dried fruit and bean curd' },
+		{ 'title': 'Seafood', 'description': 'Seaweed and fish' }];
+	
 	var result = [];
 
-	// some silly test data
-	if (req.query.s.length === 1) {
-		result.push(a);
-	}
+	data.forEach(function(d) {
+		if (d.title.toUpperCase().indexOf(req.query.s.toUpperCase()) !== -1) {
+			result.push(d);
+		}
+	});
 
-	if (req.query.s.length === 2) {
-		result.push(a);
-		result.push(b);
-	}
-
-	if (req.query.s.length === 3) {
-		result.push(a);
-		result.push(b);
-		result.push(c);
-	}
-
-	if (req.query.s.length === 4) {
-		result.push(a);
-		result.push(b);
-		result.push(c);
-		result.push(d);
-	}
-
-	if (req.query.s.length > 4) {
-		result.push(a);
-		result.push(b);
-		result.push(c);
-		result.push(d);
-		result.push(e);
-	}
-
-	// simulate i/o
+	// simulate i/o when running locally
 	setTimeout(function() {
 		res.json(result);	
 	}, 500);

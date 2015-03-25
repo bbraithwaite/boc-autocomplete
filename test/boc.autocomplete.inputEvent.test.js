@@ -186,4 +186,19 @@ describe('boc.autocomplete.inputEvent', function() {
 
   });
 
+  describe('empty input value', function() {
+
+    it('should not make http call', function () {
+      var thisArg = {
+        input: {
+          value: ''
+        },
+        ul: ulFixture(3)
+      };
+
+      autocompleteInstance.inputEvt.call(thisArg);
+    });
+
+  });
+
 });

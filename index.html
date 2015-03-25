@@ -10,6 +10,7 @@
 	</head>
 	<body>
 		<input type="search" id="autocomplete" placeholder="Search...">
+		<p id="picked"></p>
 		<script type="text/javascript" src="/build/boc.autocomplete.min.js"></script>
 		<script>
 			new Autocomplete(document.getElementById('autocomplete'), { 
@@ -17,7 +18,7 @@
 				param: 's',
 				label: 'title',
 				select: function(item) {
-					console.log(item);
+					document.getElementById("picked").innerHTML = "You chose " + item.title;
 				}
 			});
  		</script>
