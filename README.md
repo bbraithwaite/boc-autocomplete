@@ -52,4 +52,4 @@ Navigate to:
 
 http://localhost:3000/index.html
 
-**Work in progress.**
+**Disclaimer: Not (yet) used in production.**
