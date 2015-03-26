@@ -6,10 +6,11 @@
   "scripts": {
     "prestart": "grunt",
     "start": "node server.js",
-    "test": "./node_modules/.bin/karma start karma.dev.js",
-    "test-build": "./node_modules/.bin/karma start karma.build.js",
-    "release" : "grunt & npm run test-build",
-    "coverage": "./node_modules/.bin/karma start karma.coverage.js"
+    "test": "./node_modules/.bin/karma start karma/dev.js",
+    "test-all": "./node_modules/.bin/karma start karma/dev.all.js",
+    "test-build": "./node_modules/.bin/karma start karma/build.js",
+    "build" : "grunt & npm run test-build",
+    "coverage": "./node_modules/.bin/karma start karma/coverage.js & open coverage"
   },
   "repository": {
     "type": "git",
