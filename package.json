@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "prestart": "grunt",
-    "start" : "node server.js",
+    "start": "node server.js",
     "test": "./node_modules/.bin/karma start karma.dev.js",
     "test-build": "./node_modules/.bin/karma start karma.build.js",
+    "release" : "grunt & npm run test-build",
     "coverage": "./node_modules/.bin/karma start karma.coverage.js"
   },
   "repository": {
@@ -33,7 +34,7 @@
     "karma-chrome-launcher": "^0.1.7",
     "karma-coverage": "^0.2.7",
     "karma-mocha": "^0.1.10",
-    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-safari-launcher": "^0.1.1",
     "mocha": "^2.1.0"
   }
 }

@@ -27,8 +27,7 @@ module.exports = function(grunt) {
       options: {
         jshintrc: true
       },
-      beforeconcat: ['lib/**/*.js', 'test/**/*.js'],
-      afterconcat: ['build/<%= pkg.name %>.js']
+      beforeconcat: ['lib/**/*.js', 'test/**/*.js']
     }
   });
 
